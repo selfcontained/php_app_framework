@@ -1,0 +1,11 @@
+{% extends '_layouts/main.twig' %}
+
+{% block main %}
+
+	Home
+{{ params }}
+	{% for key,value in params %}
+		{{ key }} : {{ value }}<br>
+	{% endfor %}
+
+{% endblock %}
