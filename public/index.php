@@ -8,8 +8,7 @@ Application\Autoloader::register(parse_ini_file('../config/classmap.ini'));
 
 $routeManager = new Routing\Manager(array(
 	'/^\/$/' 					=> new Routing\Handler\Controller('Controller\Home', 'index'),
-	'/^\/about-the-author\/$/'	=> new Routing\Handler\View('home/author.twig'),
-	'/^\/books\/$/' 			=> new Routing\Handler\View('books/index.twig'),
+	'/^\/direct-view\/$/'	=> new Routing\Handler\View('home/direct-view.twig'),
 	'/^\/css\/combined\.(?<bundle>[a-z]+)\.css$/' => new Routing\Handler\Less()
 ));
 
