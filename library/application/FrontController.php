@@ -5,6 +5,11 @@ class FrontController {
 
 	protected static $instance;
 
+	protected $handlers;
+
+	//TODO: abstract this so it's not just a public property - useage is for handlers to expose data when needed
+	public $data;
+
 	protected $applicationRoot;
 
 	public static function initialize($applicationRoot) {
@@ -21,13 +26,24 @@ class FrontController {
 		return self::$instance;
 	}
 
-	public function dispatch(\Routing\Manager $routeManager, $uri) {
-		// $this->enforceTrailingSlash($uri);
-		$route = $routeManager->getMatch($uri);
-		if($route != null) {
-			$route->getHandler()->dispatch($route->getParams());
-		}else {
-			throw new \Exception('No Route found for: ' . $uri);
+	public function handler(Request\Handler\Base $obj) {
+		$this->handlers[] = $obj;
+		$obj->init();
+		return $this;
+	}
+
+	public function dispatch() {
+		//pre execute
+		foreach($this->handlers AS $obj) {
+			$obj->preExecute();
+		}
+		//execute
+		foreach($this->handlers AS $obj) {
+			$obj->execute();
+		}
+		//post execute
+		foreach($this->handlers AS $obj) {
+			$obj->postExecute();
 		}
 	}
 
